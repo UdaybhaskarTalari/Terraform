@@ -1,0 +1,51 @@
+resource "aws_instance" "myFirstInstance" {
+  ami="ami-07f3ef11ec14a1ea3"
+  count=1
+  key_name = "key-pair"
+  instance_type = "t2.micro"
+  security_groups= ["inst_security165654"]
+  tags={
+  Name = "success_host_inst"
+}
+  user_data = <<-EOF
+  #!/bin/bash
+  yum update -y
+  yum install -y httpd
+  yum install unzip
+  wget https://www.tooplate.com/zip-templates/2113_earth.zip
+  unzip 2113_earth.zip
+  cp -r 2113_earth/* /var/www/html/
+  systemctl start httpd
+  systemctl enable httpd
+  EOF
+}
+resource "aws_security_group" "inst_security165654" {
+name= "inst_security165654" 
+ingress{
+from_port= 8080
+to_port = 8080
+protocol= "tcp"
+cidr_blocks = ["0.0.0.0/0"]
+}
+ingress {
+from_port = 22
+to_port = 22
+protocol = "tcp"
+cidr_blocks = ["0.0.0.0/0"]
+}
+egress{
+from_port = 0
+to_port= 65535
+protocol = "tcp" 
+cidr_blocks = ["0.0.0.0/0"]
+}
+ingress{
+from_port   = 0
+to_port     = 65535
+protocol    = "tcp"
+cidr_blocks = ["0.0.0.0/0"]
+}
+tags={
+Name = "security_port"
+}
+}
