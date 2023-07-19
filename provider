@@ -1,0 +1,6 @@
+provider"aws"{
+access_key="xxxxxxxxxxxxxx"
+secret_key="xxxxxxxxxxxxxxxxxxxxx"
+region="us-west-2"
+}
+replace the accesskey and secretkey with your iam access and secret key
